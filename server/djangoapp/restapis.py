@@ -1,5 +1,4 @@
-# Uncomment the imports below before you add the function code
-import requests
+# Uncomment the imports below before you add the function codeimport requests
 import os
 from dotenv import load_dotenv
 
