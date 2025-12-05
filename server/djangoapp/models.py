@@ -1,5 +1,3 @@
-"""Django models for CarMake and CarModel."""
-
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -11,8 +9,8 @@ class CarMake(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        short_desc = (self.description[:20] + "...") if self.description else ""
-        return f"{self.name} - {short_desc}"
+        short_desc = self.description[:20]
+        return f"{self.name} - {short_desc}..."
 
 
 class CarModel(models.Model):
@@ -44,7 +42,7 @@ class CarModel(models.Model):
 
     year = models.IntegerField(
         validators=[
-            MaxValueValidator(now().year),
+            MaxValueValidator(2025),    # Required for this lab
             MinValueValidator(1990),
         ]
     )
@@ -53,3 +51,5 @@ class CarModel(models.Model):
 
     def __str__(self):
         return f"{self.car_make.name} {self.name} ({self.year})"
+
+
