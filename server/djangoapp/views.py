@@ -10,7 +10,6 @@ from .models import CarMake, CarModel
 from .populate import initiate
 from .restapis import get_request, analyze_review_sentiments, post_review
 
-# Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
@@ -62,13 +61,14 @@ def registration(request):
 
 
 def get_cars(request):
-    """Return all car models, populate if empty."""
+    """Return all car models; populate if empty."""
     if CarMake.objects.count() == 0:
         initiate()
 
     car_models = CarModel.objects.select_related("car_make")
     cars = [
-        {"CarModel": car.name, "CarMake": car.car_make.name} for car in car_models
+        {"CarModel": car.name, "CarMake": car.car_make.name}
+        for car in car_models
     ]
     return JsonResponse({"CarModels": cars})
 
