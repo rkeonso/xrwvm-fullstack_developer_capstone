@@ -10,8 +10,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
-var dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
+var reviews_data = JSON.parse(fs.readFileSync(__dirname + "/data/reviews.json", 'utf8'));
+var dealerships_data = JSON.parse(fs.readFileSync(__dirname + "/data/dealerships.json", 'utf8'));
 
 mongoose.connect("mongodb://mongo_db:27017/", { dbName: 'dealershipsDB' });
 

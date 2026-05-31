@@ -11,7 +11,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [lastName, setLastName] = useState("");
 
 // Redirect to home
   const gohome = ()=> {
@@ -22,7 +22,7 @@ const Register = () => {
   const register = async (e) => {
     e.preventDefault();
 
-    let register_url = window.location.origin+"/djangoapp/register";
+    const register_url = "http://127.0.0.1:8000/djangoapp/register";
 
 // Send POST request to register endpoint
     const res = await fetch(register_url, {
@@ -76,7 +76,7 @@ const Register = () => {
 
           <div>
             <img src={user_icon} className="img_icon" alt='Last Name'/>
-            <input type="text"  name="last_name" placeholder="Last Name" className="input_field" onChange={(e) => setlastName(e.target.value)}/>
+            <input type="text"  name="last_name" placeholder="Last Name" className="input_field" onChange={(e) => setLastName(e.target.value)}/>
           </div>
 
           <div>

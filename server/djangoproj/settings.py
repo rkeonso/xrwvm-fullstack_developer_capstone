@@ -29,10 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
-    "https://rkeonso-8000.theiadockernext-0-labs-prod-"
-    "theiak8s-4-tor01.proxy.cognitiveclass.ai",
+    "127.0.0.1"
 ]
-
 CSRF_TRUSTED_ORIGINS = [
     "https://rkeonso-8000.theiadockernext-0-labs-prod-"
     "theiak8s-4-tor01.proxy.cognitiveclass.ai",
@@ -44,6 +42,7 @@ REST_FRAMEWORK = {
 
 # Application definition
 INSTALLED_APPS = [
+    "corsheaders",
     "djangoapp.apps.DjangoappConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -54,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -147,4 +147,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend/static"),
     os.path.join(BASE_DIR, "frontend/build"),
     os.path.join(BASE_DIR, "frontend/build/static"),
+
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]

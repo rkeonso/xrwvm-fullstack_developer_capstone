@@ -51,3 +51,16 @@ class CarModel(models.Model):
 
     def __str__(self):
         return f"{self.car_make.name} {self.name} ({self.year})"
+
+class Review(models.Model):
+    name = models.CharField(max_length=100)
+    dealership = models.IntegerField()
+    review = models.TextField()
+    purchase = models.BooleanField(default=False)
+    purchase_date = models.DateField()
+    car_make = models.CharField(max_length=50)
+    car_model = models.CharField(max_length=50)
+    car_year = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.name} - {self.car_make} {self.car_model}"

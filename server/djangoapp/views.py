@@ -1,7 +1,7 @@
 # Uncomment the required imports before adding the code
 
 # from django.shortcuts import render
-# from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 # from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
@@ -12,10 +12,11 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
 import logging
+import requests
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
-from .models import CarMake, CarModel
+from .models import CarMake, CarModel, Review
 from .restapis import get_request, analyze_review_sentiments, post_review
 
 
@@ -53,42 +54,45 @@ def logout_request(request):
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
-    # Get user data from request form
-    # context = {}
     data = json.loads(request.body)
+
     username = data['userName']
     password = data['password']
     first_name = data['firstName']
     last_name = data['lastName']
     email = data['email']
+
     username_exist = False
-    # email_exist = False
+
     try:
-        # Check if user already exists
         User.objects.get(username=username)
         username_exist = True
     except Exception as err:
-        # If not, simply log this is a new user
-        logger.debug("{} is new user".format(username))
-        print(f"Unexpected {err=}, {type(err)=}")
+        logger.debug(f"{username} is a new user")
 
-    # If it is a new user
     if not username_exist:
-        # Create user in auth_user table
-        user = User.objects.create_user(username=username,
-                                        first_name=first_name,
-                                        last_name=last_name,
-                                        password=password,
-                                        email=email)
-        # Login the user and redirect to list page
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            email=email
+        )
+
         login(request, user)
-        data = {"userName": username, "status": "Authenticated"}
-        return JsonResponse(data)
+
+        return JsonResponse({
+            "userName": username,
+            "status": "Authenticated"
+        })
     else:
-        data = {"userName": username, "error": "Already Registered"}
-        return JsonResponse(data)
+        return JsonResponse({
+            "userName": username,
+            "status": "User already exists"
+        })
 
-
+def index(request):
+    return JsonResponse({"message": "Django backend is running!"})
 # get a list of cars
 def get_cars(request):
     count = CarMake.objects.filter().count()
@@ -98,56 +102,132 @@ def get_cars(request):
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name,
+       cars.append({"CarModel": car_model.name,
                     "CarMake": car_model.car_make.name})
     return JsonResponse({"CarModels": cars})
 
 
 # Update the `get_dealerships` render list of dealerships all by default,
 # particular state if state is passed
+
 def get_dealerships(request, state="All"):
-    if (state == "All"):
-        endpoint = "/fetchDealers"
-    else:
-        endpoint = "/fetchDealers/"+state
-    dealerships = get_request(endpoint)
-    return JsonResponse({"status": 200, "dealers": dealerships})
 
+    dealers = [
+        {
+            "id": 1,
+            "full_name": "Best Cars",
+            "city": "Dallas",
+            "address": "123 Main St",
+            "zip": "75001",
+            "state": "TX"
+        },
+        {
+            "id": 2,
+            "full_name": "Auto World",
+            "city": "Austin",
+            "address": "456 Market St",
+            "zip": "73301",
+            "state": "TX"
+        }
+    ]
 
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
-def get_dealer_reviews(request, dealer_id):
-    # if dealer id has been provided
-    if (dealer_id):
-        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
-        reviews = get_request(endpoint)
-        for review_detail in reviews:
-            response = analyze_review_sentiments(review_detail['review'])
-            print(response)
-            review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status": 200, "reviews": reviews})
-    else:
-        return JsonResponse({"status": 400, "message": "Bad Request"})
+    return JsonResponse({
+        "status": 200,
+        "dealers": dealers
+    })
 
-
-# Create a `get_dealer_details` view to render the dealer details
 def get_dealer_details(request, dealer_id):
-    if (dealer_id):
-        endpoint = "/fetchDealer/"+str(dealer_id)
-        dealership = get_request(endpoint)
-        return JsonResponse({"status": 200, "dealer": dealership})
-    else:
-        return JsonResponse({"status": 400, "message": "Bad Request"})
+    if dealer_id == 1:
+        dealer = {
+            "id": 1,
+            "full_name": "Best Cars",
+            "city": "Dallas",
+            "state": "TX",
+            "address": "123 Main St",
+            "zip": "75001"
+        }
 
+    elif dealer_id == 2:
+        dealer = {
+            "id": 2,
+            "full_name": "Auto World",
+            "city": "Austin",
+            "state": "TX",
+            "address": "456 Market St",
+            "zip": "73301"
+        }
+
+    else:
+        return JsonResponse(
+            {"status": 404, "error": "Dealer not found"},
+            status=404
+        )
+
+    return JsonResponse({
+        "status": 200,
+        "dealer": dealer
+    })
+
+def get_dealer_reviews(request, dealer_id):
+
+    reviews = Review.objects.filter(dealership=dealer_id)
+
+    return JsonResponse({
+        "status": 200,
+        "reviews": list(reviews.values())
+    })
+
+
+   
+
+
+def get_request(endpoint):
+    url = "http://127.0.0.1:3030" + endpoint   # 👈 local mock API server
+
+    try:
+        response = requests.get(url)
+        return response.json()
+    except:
+        return {"error": "Request failed"}
 
 # Create a `add_review` view to submit a review
 def add_review(request):
-    if (request.user.is_anonymous is False):
+    if request.method == "POST":
         data = json.loads(request.body)
-        try:
-            response = post_review(data)
-            return JsonResponse({"status": 200, "response": response})
-        except Exception as err:
-            return JsonResponse({"status": 401,
-                                "message": err})
-    else:
-        return JsonResponse({"status": 403, "message": "Unauthorized"})
+
+        review = Review.objects.create(
+            name=data["name"],
+            dealership=data["dealership"],
+            review=data["review"],
+            purchase=data["purchase"],
+            purchase_date=data["purchase_date"],
+            car_make=data["car_make"],
+            car_model=data["car_model"],
+            car_year=data["car_year"]
+        )
+
+        return JsonResponse({
+            "status": 200,
+            "message": "Review added successfully"
+        })
+    return JsonResponse({
+        "status": 400,
+        "message": "Invalid request"
+    })
+
+    
+def get_dealers(request):
+    dealers = [
+        {
+            "id": 1,
+            "name": "Best Cars",
+            "city": "Dallas"
+        },
+        {
+            "id": 2,
+            "name": "Auto World",
+            "city": "Austin"
+        }
+    ]
+
+    return JsonResponse(dealers, safe=False)
