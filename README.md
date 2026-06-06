@@ -22,6 +22,8 @@ The frontend is built using **React** and the backend is built using **Django**.
 * User login
 * User logout
 * Session-based authentication
+  <img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/14f95199-5eb1-4d80-a041-2605978d233f" />
+
 
 ### Dealership Management
 * Display dealership listings
