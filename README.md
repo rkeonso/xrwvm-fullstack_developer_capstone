@@ -22,13 +22,16 @@ The frontend is built using **React** and the backend is built using **Django**.
 * User login
 * User logout
 * Session-based authentication
-  <img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/14f95199-5eb1-4d80-a041-2605978d233f" />
+<img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/076a1150-7b3c-4dd7-8ee1-6e0b9de7f768" />
 
+  
 
 ### Dealership Management
 * Display dealership listings
 * Display dealership details
 * View dealership information
+<img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/4a12fe2d-4f89-4ea7-9c18-e3f3394ff1ab" />
+
 
 ### Review System
 * Submit dealership reviews
@@ -36,10 +39,15 @@ The frontend is built using **React** and the backend is built using **Django**.
 * Retrieve reviews by dealership
 * Display reviews on dealership pages
 
+<img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/1ecaa373-8803-40ff-a6c5-0b464d3f70b6" />
+
+
 ### Vehicle Information
 * Vehicle make and model database
 * Dynamic vehicle dropdown selection
 * Vehicle year selection during review submission
+<img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/6c51a7ec-d05c-483b-aca2-9f36dfcb9d2e" />
+
 
 ## Tech stack
 * **Frontend**: React, React Router, JavaScript, HTML/CSS
