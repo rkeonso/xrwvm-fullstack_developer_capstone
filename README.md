@@ -1,62 +1,80 @@
-# coding-project-template
+# Car Dealeship Reviews Application
 
-Car Dealeship reviews application
-
-Overview 
-This project is a full-stack car dealership review application developed as part of the IBM Full Stack Software Developer Capstone.
+# Overview 
+This project is a full-stack car dealership review application developed as part of the **IBM Full Stack Software Developer Capstone**.
 
 The application allows users to:
+* View a list of dealerships
+* View dealership details
+* Register and log in
+* Submit reviews for dealerships
+* View reviews associated with specific dealerships
+* Select vehicle make and model when posting a review
 
-View a list of dealerships
-View dealership details
-Register and log in
-Submit reviews for dealerships
-View reviews associated with specific dealerships
-Select vehicle make and model when posting a review
+The frontend is built using **React** and the backend is built using **Django**.
 
-The frontend is built using React and the backend is built using Django.
+---
 
-User Authentication
- -User registration
- -User login
- -User logout
- -Session-based authentication
+## Features 
 
-Dealership Management
- -Display dealership listings
- -Display dealership details
- -View dealership information
+### User Authentication
+* User registration
+* User login
+* User logout
+* Session-based authentication
 
-Review System
- -Submit dealership reviews
- -Store reviews in the database
- -Retrieve reviews by dealership
- -Display reviews on dealership pages
+### Dealership Management
+* Display dealership listings
+* Display dealership details
+* View dealership information
 
-Vehicle Information
- -Vehicle make and model database
- -Dynamic vehicle dropdown selection
- -Vehicle year selection during review submission
+### Review System
+* Submit dealership reviews
+* Store reviews in the database
+* Retrieve reviews by dealership
+* Display reviews on dealership pages
 
-Tech stack
- Frontend: React, React Router, JavaScript, HTML/CSS
- Backend: Django, SQlite
- Tools: Git, Github
+### Vehicle Information
+* Vehicle make and model database
+* Dynamic vehicle dropdown selection
+* Vehicle year selection during review submission
 
-Installation
- Frontend: cd frontend, npm install, npm start
- Backend: cd server, python manage.py migrate, python manage.py runserver
+## Tech stack
+* **Frontend**: React, React Router, JavaScript, HTML/CSS
+* **Backend**: Django, SQlite
+* **Tools**: Git, Github
 
-API Endpoints
- GET /djangoapp/dealers
- GET /djangoapp/dealer/<dealer_id>
- GET /djangoapp/get_cars
- GET /djangoapp/get_dealer_reviews/<dealer_id>
- POST /djangoapp/add_review
+## Installation
+### Frontend
+''' bash
+ cd frontend 
+ npm install
+ npm start
+ '''
 
- Completed: Dealership listing, Dealership details, User authentication,Review submission, Review persistence, Vehicle dropdown integration
+ ### Backend
+ ''' bash
+ cd server
+python manage.py migrate
+python manage.py runserver
+'''
 
- Key Accomplishments
+## API Endpoints
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| **GET** | `/djangoapp/dealers` | Fetch all dealers |
+| **GET** | `/djangoapp/dealer/<dealer_id>` | Fetch specific dealer details |
+| **GET** | `/djangoapp/get_cars` | Fetch vehicle list |
+| **GET** | `/djangoapp/get_dealer_reviews/<dealer_id>` | Fetch reviews for a dealer |
+| **POST** | `/djangoapp/add_review` | Submit a new review |
+
+### Completed Features
+* [x] Dealership listing & details
+* [x] User authentication
+* [x] Review submission & persistence
+* [x] Vehicle dropdown integration
+
+ ## Key Accomplishments
  During development, I implemented:
  Dynamic vehicle make/model dropdowns from backend data
 - Review persistence using Django models and SQLite
