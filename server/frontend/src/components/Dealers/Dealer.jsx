@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react';
-import { getDealerDetails, getDealerReviews } from "../../services/api";
 import { useParams } from 'react-router-dom';
 import "./Dealers.css";
 import "../assets/style.css";

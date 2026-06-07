@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { addReview } from "../../services/api";
 import { useParams } from 'react-router-dom';
 import "./Dealers.css";
 import "../assets/style.css";
@@ -14,7 +13,6 @@ const PostReview = () => {
   const [date, setDate] = useState("");
   const [carmodels, setCarmodels] = useState([]);
 
-  let root_url = "http://127.0.0.1:8000/";
   let params = useParams();
   let id =params.id;
   let dealer_url = "http://127.0.0.1:8000/djangoapp/dealer/" + id;
@@ -57,7 +55,7 @@ const PostReview = () => {
       body: jsoninput,
   });
 
-  const json = await res.json();
+  const data = await res.json();
   if (res.status === 200) {
     window.location.href = "/dealer/" + id;
 }
