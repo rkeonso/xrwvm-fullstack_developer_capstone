@@ -51,7 +51,6 @@ class CarModel(models.Model):
 
     def __str__(self):
         return f"{self.car_make.name} {self.name} ({self.year})"
-        
 
 class Review(models.Model):
     name = models.CharField(max_length=100)
@@ -65,4 +64,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.car_make} {self.car_model}"
-        
