@@ -1,7 +1,6 @@
 # Uncomment the required imports before adding the code
 
 # from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 # from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
@@ -17,7 +16,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
 from .models import CarMake, CarModel, Review
-from .restapis import get_request, analyze_review_sentiments, post_review
+# from .restapis import get_request, analyze_review_sentiments, post_review
 
 
 # Get an instance of a logger
@@ -93,6 +92,8 @@ def registration(request):
 
 def index(request):
     return JsonResponse({"message": "Django backend is running!"})
+
+
 # get a list of cars
 def get_cars(request):
     count = CarMake.objects.filter().count()
@@ -136,6 +137,7 @@ def get_dealerships(request, state="All"):
         "dealers": dealers
     })
 
+
 def get_dealer_details(request, dealer_id):
     if dealer_id == 1:
         dealer = {
@@ -168,6 +170,7 @@ def get_dealer_details(request, dealer_id):
         "dealer": dealer
     })
 
+
 def get_dealer_reviews(request, dealer_id):
 
     reviews = Review.objects.filter(dealership=dealer_id)
@@ -178,9 +181,6 @@ def get_dealer_reviews(request, dealer_id):
     })
 
 
-   
-
-
 def get_request(endpoint):
     url = "http://127.0.0.1:3030" + endpoint   # 👈 local mock API server
 
@@ -189,6 +189,7 @@ def get_request(endpoint):
         return response.json()
     except:
         return {"error": "Request failed"}
+
 
 # Create a `add_review` view to submit a review
 def add_review(request):
@@ -215,7 +216,7 @@ def add_review(request):
         "message": "Invalid request"
     })
 
-    
+
 def get_dealers(request):
     dealers = [
         {
